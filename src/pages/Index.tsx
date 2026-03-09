@@ -1,6 +1,7 @@
 import { Mail, Phone, Printer, Smartphone, Instagram, Facebook, ExternalLink, Sparkles, Star, Wand2 } from "lucide-react";
 import heroImage from "@/assets/hero-magic.jpg";
 import logoImage from "@/assets/magic-logo.png";
+import PortfolioSection from "@/components/PortfolioSection";
 
 const Header = () => (
   <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
