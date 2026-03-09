@@ -8,13 +8,13 @@ import portfolio5 from "@/assets/portfolio-5.jpg";
 import portfolio6 from "@/assets/portfolio-6.jpg";
 
 const portfolioItems = [
-  { img: portfolio1, title: "舞台魔術表演", category: "舞台表演", type: "photo" as const },
-  { img: portfolio2, title: "企業晚宴近距離魔術", category: "近距離魔術", type: "photo" as const },
-  { img: portfolio3, title: "兒童魔術教學工作坊", category: "教學課程", type: "photo" as const },
-  { img: portfolio4, title: "大型幻術表演", category: "舞台表演", type: "photo" as const },
-  { img: portfolio5, title: "生日派對魔術表演", category: "派對表演", type: "photo" as const },
-  { img: portfolio6, title: "街頭魔術表演", category: "街頭魔術", type: "photo" as const },
-];
+  { img: portfolio1, title: "舞台魔術表演", category: "舞台表演", type: "photo" },
+  { img: portfolio2, title: "企業晚宴近距離魔術", category: "近距離魔術", type: "photo" },
+  { img: portfolio3, title: "兒童魔術教學工作坊", category: "教學課程", type: "photo" },
+  { img: portfolio4, title: "大型幻術表演", category: "舞台表演", type: "photo" },
+  { img: portfolio5, title: "生日派對魔術表演", category: "派對表演", type: "photo" },
+  { img: portfolio6, title: "街頭魔術表演", category: "街頭魔術", type: "photo" },
+] as const;
 
 const categories = ["全部", "舞台表演", "近距離魔術", "教學課程", "派對表演", "街頭魔術"];
 
