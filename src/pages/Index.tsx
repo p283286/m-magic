@@ -13,6 +13,7 @@ const Header = () => (
       <nav className="hidden md:flex items-center gap-6 text-sm font-body">
         <a href="#about" className="text-muted-foreground hover:text-primary transition-colors">關於我們</a>
         <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">服務</a>
+        <a href="#portfolio" className="text-muted-foreground hover:text-primary transition-colors">作品集</a>
         <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors">聯絡</a>
       </nav>
       <div className="flex items-center gap-3">
