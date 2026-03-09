@@ -1,6 +1,7 @@
 import { Mail, Phone, Printer, Smartphone, Instagram, Facebook, ExternalLink, Sparkles, Star, Wand2 } from "lucide-react";
 import heroImage from "@/assets/hero-magic.jpg";
 import logoImage from "@/assets/magic-logo.png";
+import PortfolioSection from "@/components/PortfolioSection";
 
 const Header = () => (
   <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
@@ -12,6 +13,7 @@ const Header = () => (
       <nav className="hidden md:flex items-center gap-6 text-sm font-body">
         <a href="#about" className="text-muted-foreground hover:text-primary transition-colors">關於我們</a>
         <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">服務</a>
+        <a href="#portfolio" className="text-muted-foreground hover:text-primary transition-colors">作品集</a>
         <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors">聯絡</a>
       </nav>
       <div className="flex items-center gap-3">
@@ -195,6 +197,7 @@ const Index = () => {
       <HeroSection />
       <AboutSection />
       <ServicesSection />
+      <PortfolioSection />
       <ContactSection />
       <Footer />
     </div>
