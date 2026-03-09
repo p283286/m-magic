@@ -1,24 +1,10 @@
 import { useState } from "react";
-import { Camera, Play, X } from "lucide-react";
-import portfolio1 from "@/assets/portfolio-1.jpg";
-import portfolio2 from "@/assets/portfolio-2.jpg";
-import portfolio3 from "@/assets/portfolio-3.jpg";
-import portfolio4 from "@/assets/portfolio-4.jpg";
-import portfolio5 from "@/assets/portfolio-5.jpg";
-import portfolio6 from "@/assets/portfolio-6.jpg";
-
-const portfolioItems = [
-  { img: portfolio1, title: "舞台魔術表演", category: "舞台表演", type: "photo" },
-  { img: portfolio2, title: "企業晚宴近距離魔術", category: "近距離魔術", type: "photo" },
-  { img: portfolio3, title: "兒童魔術教學工作坊", category: "教學課程", type: "photo" },
-  { img: portfolio4, title: "大型幻術表演", category: "舞台表演", type: "photo" },
-  { img: portfolio5, title: "生日派對魔術表演", category: "派對表演", type: "photo" },
-  { img: portfolio6, title: "街頭魔術表演", category: "街頭魔術", type: "photo" },
-] as const;
-
-const categories = ["全部", "舞台表演", "近距離魔術", "教學課程", "派對表演", "街頭魔術"];
+import { Camera, X } from "lucide-react";
+import { getPortfolioItems, getCategories } from "@/lib/portfolioData";
 
 const PortfolioSection = () => {
+  const portfolioItems = getPortfolioItems();
+  const categories = getCategories(portfolioItems);
   const [activeCategory, setActiveCategory] = useState("全部");
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
@@ -38,7 +24,6 @@ const PortfolioSection = () => {
           <p className="text-muted-foreground font-body">歷年魔術表演及活動精選</p>
         </div>
 
-        {/* Category Filter */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
           {categories.map(cat => (
             <button
@@ -55,13 +40,12 @@ const PortfolioSection = () => {
           ))}
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
           {filtered.map((item, i) => (
             <div
-              key={`${item.title}-${i}`}
-              onClick={() => setSelectedImage(portfolioItems.indexOf(item))}
-              className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer border border-border hover:border-primary/40 transition-all duration-300 hover:shadow-glow"
+              key={item.id}
+              onClick={() => setSelectedImage(i)}
+              className="group relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer border border-border hover:border-primary/40 transition-all duration-300 hover:shadow-glow"
             >
               <img
                 src={item.img}
@@ -70,23 +54,15 @@ const PortfolioSection = () => {
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+              <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                 <span className="text-xs text-accent font-body mb-1 block">{item.category}</span>
-                <h3 className="font-display text-lg font-bold text-foreground">{item.title}</h3>
+                <h3 className="font-display text-sm font-bold text-foreground">{item.title}</h3>
               </div>
-              {item.type === "video" && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-14 h-14 rounded-full bg-primary/80 flex items-center justify-center backdrop-blur-sm">
-                    <Play size={24} className="text-primary-foreground ml-1" />
-                  </div>
-                </div>
-              )}
             </div>
           ))}
         </div>
       </div>
 
-      {/* Lightbox */}
       {selectedImage !== null && (
         <div
           className="fixed inset-0 z-50 bg-background/95 backdrop-blur-md flex items-center justify-center p-4"
@@ -100,13 +76,13 @@ const PortfolioSection = () => {
           </button>
           <div className="max-w-4xl w-full" onClick={e => e.stopPropagation()}>
             <img
-              src={portfolioItems[selectedImage].img}
-              alt={portfolioItems[selectedImage].title}
+              src={filtered[selectedImage].img}
+              alt={filtered[selectedImage].title}
               className="w-full rounded-xl shadow-2xl"
             />
             <div className="mt-4 text-center">
-              <span className="text-xs text-accent font-body">{portfolioItems[selectedImage].category}</span>
-              <h3 className="font-display text-xl font-bold text-foreground mt-1">{portfolioItems[selectedImage].title}</h3>
+              <span className="text-xs text-accent font-body">{filtered[selectedImage].category}</span>
+              <h3 className="font-display text-xl font-bold text-foreground mt-1">{filtered[selectedImage].title}</h3>
             </div>
           </div>
         </div>
