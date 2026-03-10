@@ -16,6 +16,16 @@ const PortfolioSection = () => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedImage(null);
+    };
+    if (selectedImage !== null) {
+      document.addEventListener("keydown", handleKeyDown);
+      return () => document.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [selectedImage]);
+
+  useEffect(() => {
     const fetchItems = async () => {
       const { data } = await supabase
         .from("portfolio_items")
