@@ -1,12 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Camera, X } from "lucide-react";
-import { getPortfolioItems, getCategories } from "@/lib/portfolioData";
+import { supabase } from "@/integrations/supabase/client";
+
+interface PortfolioItem {
+  id: string;
+  img: string;
+  title: string;
+  category: string;
+}
 
 const PortfolioSection = () => {
-  const portfolioItems = getPortfolioItems();
-  const categories = getCategories(portfolioItems);
+  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+  const [categories, setCategories] = useState<string[]>(["全部"]);
   const [activeCategory, setActiveCategory] = useState("全部");
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const { data } = await supabase
+        .from("portfolio_items")
+        .select("id, img, title, category")
+        .order("sort_order");
+      if (data) {
+        setPortfolioItems(data);
+        const cats = new Set(data.map((i) => i.category));
+        setCategories(["全部", ...Array.from(cats)]);
+      }
+    };
+    fetchItems();
+  }, []);
 
   const filtered = activeCategory === "全部"
     ? portfolioItems
@@ -47,12 +69,18 @@ const PortfolioSection = () => {
               onClick={() => setSelectedImage(i)}
               className="group relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer border border-border hover:border-primary/40 transition-all duration-300 hover:shadow-glow"
             >
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                loading="lazy"
-              />
+              {item.img ? (
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-body">
+                  {item.title}
+                </div>
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                 <span className="text-xs text-accent font-body mb-1 block">{item.category}</span>
@@ -75,11 +103,17 @@ const PortfolioSection = () => {
             <X size={20} />
           </button>
           <div className="max-w-4xl w-full" onClick={e => e.stopPropagation()}>
-            <img
-              src={filtered[selectedImage].img}
-              alt={filtered[selectedImage].title}
-              className="w-full rounded-xl shadow-2xl"
-            />
+            {filtered[selectedImage].img ? (
+              <img
+                src={filtered[selectedImage].img}
+                alt={filtered[selectedImage].title}
+                className="w-full rounded-xl shadow-2xl"
+              />
+            ) : (
+              <div className="w-full aspect-video bg-muted rounded-xl flex items-center justify-center text-muted-foreground text-lg">
+                {filtered[selectedImage].title}
+              </div>
+            )}
             <div className="mt-4 text-center">
               <span className="text-xs text-accent font-body">{filtered[selectedImage].category}</span>
               <h3 className="font-display text-xl font-bold text-foreground mt-1">{filtered[selectedImage].title}</h3>
